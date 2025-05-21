@@ -101,10 +101,3 @@ The script will:
 - **Model access issues**: Ensure your `HF_TOKEN` is set and has access to the model
 - **CUDA errors**: Make sure you have compatible NVIDIA drivers installed
 
-## License
-
-[License information here]
-
-## Acknowledgments
-
-This project uses datasets from Hugging Face Hub and builds on the TRL library for reward modeling.
