@@ -6,7 +6,7 @@ This repository contains scripts to train different types of reward models for p
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.9+
 - CUDA-compatible GPUs (for faster training)
 - Hugging Face account with access to the model you want to use
 
