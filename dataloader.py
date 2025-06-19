@@ -4,6 +4,7 @@ from typing import Dict, Any, Optional, List, Tuple
 import torch
 import random
 from textwrap import dedent
+import pandas as pd
 
 class LitBenchDataLoader:
     """
@@ -52,20 +53,56 @@ class LitBenchDataLoader:
     def load_datasets(self) -> Tuple[Any, Any, Any]:
         """
         Load train, validation, and test datasets.
+        Automatically uses rehydrated test data if available.
         
         Returns:
             Tuple containing (train_dataset, val_dataset, test_dataset)
         """
+        # Check for rehydrated test data first
+        rehydrated_test_path = os.path.join(self.data_dir, "rehydrated_test_data.csv")
+        
+        if os.path.exists(rehydrated_test_path):
+            print(f"🎉 Found rehydrated test data at {rehydrated_test_path}")
+            print("✨ Using rehydrated data instead of original HuggingFace dataset")
+            
+            # Load rehydrated test data
+            try:
+                rehydrated_df = pd.read_csv(rehydrated_test_path)
+                test_dataset = Dataset.from_pandas(rehydrated_df)
+                print(f"✅ Loaded {len(test_dataset)} rows from rehydrated test data")
+                
+                # Verify required fields exist
+                required_fields = ["prompt", "chosen_story", "rejected_story"]
+                missing_fields = [field for field in required_fields if field not in test_dataset.column_names]
+                if missing_fields:
+                    print(f"⚠️  Warning: Missing fields in rehydrated data: {missing_fields}")
+                    print("   Falling back to original HuggingFace dataset")
+                    raise ValueError("Missing required fields")
+                    
+            except Exception as e:
+                print(f"❌ Error loading rehydrated data: {e}")
+                print("   Falling back to original HuggingFace dataset")
+                # Fall back to original dataset
+                print(f"Loading test dataset from {self.test_dataset_name}...")
+                test_dataset = load_dataset(
+                    self.test_dataset_name, 
+                    split="train", 
+                    cache_dir=self.cache_dir
+                )
+        else:
+            print(f"No rehydrated data found at {rehydrated_test_path}")
+            print("💡 Tip: Run 'python rehydrate.py' to create rehydrated data for better training")
+            print(f"Loading test dataset from {self.test_dataset_name}...")
+            test_dataset = load_dataset(
+                self.test_dataset_name, 
+                split="train", 
+                cache_dir=self.cache_dir
+            )
+        
+        # Always load train dataset from HuggingFace (no rehydration needed for train)
         print(f"Loading train dataset from {self.train_dataset_name}...")
         train_dataset = load_dataset(
             self.train_dataset_name, 
-            split="train", 
-            cache_dir=self.cache_dir
-        )
-        
-        print(f"Loading test dataset from {self.test_dataset_name}...")
-        test_dataset = load_dataset(
-            self.test_dataset_name, 
             split="train", 
             cache_dir=self.cache_dir
         )
