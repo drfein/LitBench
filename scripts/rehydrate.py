@@ -102,14 +102,14 @@ def rehydrate_litbench_test(output_dir: str = DEFAULT_OUTPUT_DIR, max_workers: i
             return
     
     # Load the enhanced comment ID dataset (complete rows only)
-    print("📊 Loading enhanced comment ID dataset...")
+    print("📊 Loading comment ID dataset...")
     try:
-        # Load from local enhanced dataset with recovered comment IDs
-        id_dataset = load_dataset("SAA-Lab/LitBench-Test-Release")
+        # Load from minimal dataset with only comment IDs
+        id_dataset = load_dataset("SAA-Lab/LitBench-Test")
         id_df = id_dataset['train'].to_pandas()
-        print(f"✅ Loaded {len(id_df)} complete rows (100% have both comment IDs)")
+        print(f"✅ Loaded {len(id_df)} rows with comment IDs")
     except Exception as e:
-        print(f"❌ ERROR: Failed to load enhanced comment ID dataset.")
+        print(f"❌ ERROR: Failed to load comment ID dataset.")
         print(f"   Error details: {e}")
         return
 
