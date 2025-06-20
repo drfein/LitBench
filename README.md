@@ -37,7 +37,7 @@ export WANDB_API_KEY="your_wandb_api_key"
 export WANDB_PROJECT="reward_model_training"
 ```
 
-### 3. Create Dataset (Required)
+### 3. Rehydrate Test Set
 
 Rehydrate the test dataset from Reddit:
 ```bash
