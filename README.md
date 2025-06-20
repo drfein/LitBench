@@ -29,7 +29,7 @@ Set up Reddit API credentials (required for dataset creation):
 export REDDIT_CLIENT_ID="your_reddit_client_id"
 export REDDIT_CLIENT_SECRET="your_reddit_client_secret"
 ```
-*Get free Reddit API credentials at: https://www.reddit.com/prefs/apps*
+*A guide to creating credentials can be found [here](https://docs.google.com/document/d/19o3O_lMsi3i8TNgCayYGUs6TRZu6Gj7RgYmJ9gSLiBY/edit?usp=sharing)*
 
 Optional: Configure Weights & Biases:
 ```bash
@@ -70,6 +70,3 @@ Edit `training/train_BTRM.sh` or `training/train_GenRM.sh` to modify:
 - Batch size (default: 128 effective batch size)
 - Output directory
 - Training parameters
-
-That's it! Your trained model will be saved to the specified output directory.
-
